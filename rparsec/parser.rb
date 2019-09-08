@@ -43,7 +43,7 @@ class Parser
   def _display_current_input(input, code, index)
     return 'EOF' if input.nil?
     c = input
-    case c when Fixnum then "'"<<c<<"'" when Token then c.text else c.to_s end
+    case c when Numeric then "'"<<c<<"'" when Token then c.text else c.to_s end
   end
   
   def _add_encountered_error(msg, encountered)
@@ -548,7 +548,7 @@ module Parsers
   # A parser that succeeds when the the current input is the given character.
   #
   def char(c)
-    if c.kind_of? Fixnum
+    if c.kind_of? Numeric
       nm = c.chr
       is(c, "'#{nm}' expected").setName(nm)
     else
@@ -560,7 +560,7 @@ module Parsers
   # A parser that succeeds when the the current input is not the given character.
   #
   def not_char(c)
-    if c.kind_of? Fixnum
+    if c.kind_of? Numeric
       nm = c.chr
       isnt(c, "'#{nm}' unexpected").setName("~#{nm}")
     else
