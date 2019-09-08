@@ -17,7 +17,7 @@ class FullParserTest < ParserTestCase
     default
   end
   def parser
-    keywords = Keywords.case_sensitive(%w{case when else end and or not true false})
+    keywords = Keywords.case_sensitive(%w{case when then else end and or not true false})
     ops = Operators.new(%w{+ - * / % ++ -- == > < >= <= != : ( )})
     lexer = integer.token(:int)|keywords.lexer|ops.lexer
     delim = whitespaces |comment_line('#')
@@ -37,10 +37,10 @@ class FullParserTest < ParserTestCase
       infixl(keywords[:not] >> Not, 30)
     
     bool = Expressions.build(bool_term, bool_table)
-    simple_case = sequence(keywords[:when], lazy_expr, ops[':'], lazy_expr) do |w,cond,t,val|
+    simple_case = sequence(keywords[:when], lazy_expr, keywords[:then], lazy_expr) do |w,cond,t,val|
       [cond, val]
     end
-    full_case = sequence(keywords[:when], bool, ops[':'], lazy_expr) do |w,cond,t,val|
+    full_case = sequence(keywords[:when], bool, keywords[:then], lazy_expr) do |w,cond,t,val|
       [cond, val]
     end
     default_case = (keywords[:else] >> lazy_expr).optional
@@ -86,10 +86,10 @@ class FullParserTest < ParserTestCase
   def testFullCaseWhen
       assertParser('3*case when 1==0 and 1==1 then 1 when 1==1 then 2 end', 6, parser)
     begin
-      parser.parse('3*case when (1==0 and 1==1) then 1 when 1==1 then 2 end')
+      parser.parse('3*case when (1==0 and 1==1) : 1 when 1==1 then 2 end')
       fail('should have failed')
       rescue ParserException => e
-        assert(e.message.include?(': expected, then at line 1, col 42'))
+        assert(e.message.include?('keyword:then expected, : at line 1, col 29'))
     end
   end
 end
