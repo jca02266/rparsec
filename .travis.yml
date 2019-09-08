@@ -1,0 +1,10 @@
+language: ruby
+
+rvm: 2.4.0
+
+branches:
+  only:
+    - ruby2
+
+before_install: gem install test-unit
+script: cd test/src && ruby tests.rb
