@@ -1,6 +1,8 @@
 language: ruby
 
-rvm: 2.4.0
+rvm:
+  - 2.4.0
+  - 2.5.3
 
 branches:
   only:
