@@ -32,7 +32,7 @@ class SimpleParserTest < ParserTestCase
   end
   def testMap
     assertParser('', 2, value(1).map{|x|x*2})
-    relative = Proc.new{|x|x-?a}
+    relative = Proc.new{|x|x.ord-?a.ord}
     assertParser('b', 1, char('b').map(&relative))
   end
   def testMapOnFailFails
@@ -58,11 +58,11 @@ class SimpleParserTest < ParserTestCase
   end
   def testIs
     assertParser('abc', ?a, is(?a))
-    assertError('abc', '98 expected', is(?b))
+    assertError('abc', 'b expected', is(?b))
   end
   def testIsnt
     assertParser('abc', ?a, isnt(?b))
-    assertError('abc', '97 unexpected', isnt(?a))
+    assertError('abc', 'a unexpected', isnt(?a))
     assertError('abc', "'b' unexpected", not_char(?b) >> not_char('b'), 1)
   end
   def testCharAndEof
@@ -75,7 +75,7 @@ class SimpleParserTest < ParserTestCase
   def testSequence
     assertParser('abc', ?c, sequence(char(?a),char('b'),char('c')))
     a = ?a
-    relative = proc {|c|c-a}
+    relative = proc {|c| c.ord - a.ord}
     parser = sequence(
       char('c').map(&relative), 
       char('b').map(&relative), 
@@ -136,10 +136,10 @@ class SimpleParserTest < ParserTestCase
   def testAmong
     assertParser('abc', ?a, among(?b, ?a))
     assertParser('abc', ?a, among('ba'))
-    assertError('abc', "one of [98, 99] expected", among(?b,?c))
+    assertError('abc', "one of [b, c] expected", among(?b,?c))
   end
   def testNotAmong
-    assertError('abc', "one of [98, 97] unexpected", not_among(?b, ?a))
+    assertError('abc', "one of [b, a] unexpected", not_among(?b, ?a))
     assertParser('abc', ?a, not_among(?b,?c))
   end
   def testGetIndex
@@ -312,7 +312,7 @@ class SimpleParserTest < ParserTestCase
   def testWhitespaces
     assertParser('   ', ?\s, whitespaces)
     assertParser("\n\t", ?\t, whitespaces)
-    assertError("\n \tabc ", "whitespace(s) expected, 'a' at line 2, col 3.", whitespaces >> whitespaces, 3)
+    assertError("\n \tabc ", "whitespace(s) expected, a at line 2, col 3.", whitespaces >> whitespaces, 3)
   end
   def testCommentLineWithLexeme
    assertParser('#abc', nil, comment_line('#'))
@@ -374,7 +374,7 @@ class SimpleParserTest < ParserTestCase
     assertParser('abc', [?a,?a,?a], parser.repeat(3))
   end
   def testMapn
-    assertParser('abc', ?b, any.repeat(3).mapn{|a,b,c|c-b+a})
+    assertParser('abc', ?b.ord, any.repeat(3).mapn{|a,b,c|c.ord - b.ord + a.ord})
   end
   def testWatch
     i = nil
@@ -392,7 +392,7 @@ class SimpleParserTest < ParserTestCase
     assertParser('abc', ?b, any.repeat_(2) >> watch);
   end
   def testMapCurrent
-    assertParser('abc', ?b, any >> map{|x|x+1})
+    assertParser('abc', ?b.ord, any >> map{|x|x.ord+1})
     assertParser('abc', ?a, any >> map)
     assertParser('abc', ?a, any.map)
     assertParser('abc', ?a, any.mapn)
