@@ -17,7 +17,7 @@ module SqlParser
     select from where group by having order desc asc
     inner left right full outer inner join on cross
     union all distinct as exists in between limit
-    case when else end and or not true false
+    case when then else end and or not true false
   })
   MyOperators = Operators.new(%w{+ - * / % = > < >= <= <> != : ( ) . ,})
   def self.operators(*ops)
@@ -144,10 +144,10 @@ module SqlParser
   def make_expression predicate, rel
     expr = nil
     lazy_expr = lazy{expr}
-    simple_case = sequence(keyword[:when], lazy_expr, operator[':'], lazy_expr) do |_,cond,_,val|
+    simple_case = sequence(keyword[:when], lazy_expr, keyword[:then], lazy_expr) do |_,cond,_,val|
       [cond, val]
     end
-    full_case = sequence(keyword[:when], predicate, operator[':'], lazy_expr) do |_,cond,_,val|
+    full_case = sequence(keyword[:when], predicate, keyword[:then], lazy_expr) do |_,cond,_,val|
       [cond, val]
     end
     default_case = (keyword[:else] >> lazy_expr).optional
