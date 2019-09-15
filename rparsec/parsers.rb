@@ -491,7 +491,7 @@ end
 class Repeat_Parser < Parser
   init :parser, :times
   def _parse ctxt
-    for i in (0...@times)
+    @times.times do
       return false unless @parser._parse ctxt
     end
     return true
@@ -502,7 +502,7 @@ class RepeatParser < Parser
   init :parser, :times
   def _parse ctxt
     result = []
-    for i in (0...@times)
+    @times.times do
       return false unless @parser._parse ctxt
       result << ctxt.result
     end
@@ -513,7 +513,7 @@ end
 class Many_Parser < Parser
   init :parser, :least
   def _parse ctxt
-    for i in (0...@least)
+    @least.times do
       return false unless @parser._parse ctxt
     end
     while(true)
@@ -531,7 +531,7 @@ class ManyParser < Parser
   init :parser, :least
   def _parse ctxt
     result = []
-    for i in (0...@least)
+    @least.times do
       return false unless @parser._parse ctxt
       result << ctxt.result
     end

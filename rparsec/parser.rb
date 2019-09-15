@@ -434,7 +434,7 @@ class Parser
   #
   # Similar to _seq_. _other_ is auto-boxed if it is not of type Parser.
   #
-  def >> (other)
+  def >>(other)
     seq(autobox_parser(other))
   end
   

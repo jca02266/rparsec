@@ -207,7 +207,7 @@ module FunctorMixin
   #
   # a >> b is equivalent to b << a
   # 
-  def >> (other)
+  def >>(other)
     other << self
   end
   
