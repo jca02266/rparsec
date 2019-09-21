@@ -169,7 +169,7 @@ class SimpleParserTest < ParserTestCase
       shorter(char('a')>>char('b')>>char('d'), char('a')>>char('c')), 2)
   end
   def testFollowed
-    assertParser('abc', ?a, char(?a)<<char(?b))
+    assertParser('abc', ?a, char(?a) << char(?b))
   end
   def testEof
     assertParser('abc', 'abc', str('abc') << eof)
@@ -177,7 +177,7 @@ class SimpleParserTest < ParserTestCase
   end
   def testAny
     assertParser('abc', ?a, any)
-    assertError('abc', '', str('abc')<<any, 3)
+    assertError('abc', '', str('abc') << any, 3)
   end
   def testRepeat_
     assertParser('abc', ?c, any*3)
