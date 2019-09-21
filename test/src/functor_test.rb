@@ -9,7 +9,8 @@ end
 class Method
   include FunctorMixin
 end
-    
+using FunctorMixin
+
 class FunctorTestCase < Test::Unit::TestCase
   include Functors
   def verify(expected, f, *args)

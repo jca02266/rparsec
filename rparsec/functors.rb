@@ -219,10 +219,20 @@ module FunctorMixin
   # job when currying is done.
   # _ary_ explicitly specifies the number of parameters to curry.
   # 
-  def curry(ary=arity)
-    Functors.curry(ary, &self)
+  # *IMPORTANT*
+  # Proc and Method have built-in curry.
+  # but the arity always return -1.
+  # So, curry.reverse_curry does not work as expected.
+  # You needs the "using FunctorMixin"
+  # See the "functor_test.rb"
+  [Proc, Method].each do |klass|
+    refine klass do
+      def curry(ary=arity)
+        Functors.curry(ary, &self)
+      end
+    end
   end
-  
+
   #
   # Create a Proc that's curriable.
   # When curried, parameters are passed in from right to left.

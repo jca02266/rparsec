@@ -9,6 +9,8 @@ end
 class Proc
   include FunctorMixin
 end
+using FunctorMixin
+
 module SqlParser
   include Functors
   include Parsers
