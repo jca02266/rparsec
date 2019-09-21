@@ -19,7 +19,7 @@ class FunctorTestCase < Test::Unit::TestCase
     verify(1, const(1), 'a')
   end
   def testMethod
-    verify(true, 1.method(:kind_of?), Fixnum)
+    verify(true, 1.method(:kind_of?), Integer)
   end
   def testFlip
     verify(1, Minus.flip, 1, 2)

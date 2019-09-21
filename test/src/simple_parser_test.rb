@@ -354,16 +354,16 @@ class SimpleParserTest < ParserTestCase
     verifyTypeMismatch(:followed, '1st', Parser, String) do
       char('a') << 'a'
     end
-    verifyTypeMismatch(:sequence, '2nd', Parser, Fixnum) do
+    verifyTypeMismatch(:sequence, '2nd', Parser, Integer) do
       sequence(char('a'), 1, 2)
     end
-    verifyTypeMismatch(:sum, '2nd', Parser, Fixnum) do
+    verifyTypeMismatch(:sum, '2nd', Parser, Integer) do
       sum(char('a'), 1, 2)
     end
-    verifyTypeMismatch(:longest, '2nd', Parser, Fixnum) do
+    verifyTypeMismatch(:longest, '2nd', Parser, Integer) do
       longest(char('a'), 1, 2)
     end
-    verifyTypeMismatch(:shortest, '2nd', Parser, Fixnum) do
+    verifyTypeMismatch(:shortest, '2nd', Parser, Integer) do
       shortest(char('a'), 1, 2)
     end
   end

@@ -39,7 +39,7 @@ class ParserTestCase < Test::Unit::TestCase
   def current(code, index)
     return "EOF" if code.length <= index
     c = code[index]
-    if c.kind_of? Fixnum
+    if c.kind_of? Integer
       "'" << c << "'"
     else
       c.to_s
