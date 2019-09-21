@@ -157,8 +157,6 @@ module Functors
   
   extend self
   
-  private_class_method
-  
   def self.make_curry(arity, &block)
     return block if arity<=1
     proc do |x|
@@ -167,7 +165,7 @@ module Functors
       end
     end
   end
-  
+
   def self.make_reverse_curry(arity, &block)
     return block if arity <= 1
     proc do |x|
@@ -176,7 +174,6 @@ module Functors
       end
     end
   end
-  
 end
 
 #
@@ -223,7 +220,7 @@ module FunctorMixin
   # Proc and Method have built-in curry.
   # but the arity always return -1.
   # So, curry.reverse_curry does not work as expected.
-  # You needs the "using FunctorMixin"
+  # You need to use the "using FunctorMixin"
   # See the "functor_test.rb"
   [Proc, Method].each do |klass|
     refine klass do
